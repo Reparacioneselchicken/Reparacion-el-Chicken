@@ -196,58 +196,20 @@ def cotizacion():
         
     return render_template("cotizacion.html", resultado=resultado)
 
-from twilio.twml.messaging_response import MessagingResponse
 
-# --- RUTA PARA EL BOT DE WHATSAPP ---
 
-@app.route("/whatsapp", methods=["POST"])
-def whatsapp_bot():
-    mensaje_cliente = request.values.get('Body', '').strip().lower()
-    numero_cliente = request.values.get('From', '').replace('whatsapp:', '').strip()
+# --- RUTA PARA EL RECIBO Y GARANTÍA ---
+
+@app.route("/recibo/<int:id>")
+def recibo(id):
+    conn = get_db_connection()
+    equipo = conn.execute('SELECT * FROM diagnosticos WHERE id = ?', (id,)).fetchone()
+    conn.close()
     
-    resp = MessagingResponse()
-    msg = resp.message()
-
-    # Opción 1 o consulta directa por Folio/Teléfono
-    if mensaje_cliente == '1':
-        conn = get_db_connection()
-        equipo = conn.execute(
-            'SELECT * FROM diagnosticos WHERE telefono = ? ORDER BY id DESC LIMIT 1', 
-            (numero_cliente,)
-        ).fetchone()
-        conn.close()
-
-        if equipo:
-            msg.body(f"📱 *Estado de tu equipo (Folio CH-{equipo['id']}):*\n"
-                     f"• Marca/Modelo: {equipo['marca']} {equipo['modelo']}\n"
-                     f"• Estado actual: *{equipo['estado']}*\n\n"
-                     f"Para más detalles entra a: https://chickenreparacion3292.pythonanywhere.com/consultar")
-        else:
-            msg.body("No encontramos ninguna reparación vinculada a tu número de WhatsApp. "
-                     "Si tienes un número de folio, escríbelo directamente (ejemplo: 5 o CH-5).")
-
-    # Opción 2: Horarios y Ubicación
-    elif mensaje_cliente == '2':
-        msg.body("📍 *Ubicación y Horarios - El Chicken*\n\n"
-                 "⏰ Lunes a Sábado: 9:00 AM - 7:00 PM\n"
-                 "📍 Dirección: [Escribe aquí tu dirección completa]\n"
-                 "📞 Teléfono del taller: [Escribe tu número principal]")
-
-    # Opción 3: Enlace directo
-    elif mensaje_cliente == '3':
-        msg.body("Consulta el estado detallado de tu teléfono ingresando aquí:\n"
-                 "https://chickenreparacion3292.pythonanywhere.com/consultar")
-
-    # Menú Principal (Si escribe hola o cualquier otra cosa)
-    else:
-        msg.body("¡Hola! 🐔 Bienvenido a *Reparaciones El Chicken*.\n\n"
-                 "¿En qué te podemos ayudar? Responde con el número de opción:\n\n"
-                 "1️⃣ Consultar estado de mi equipo\n"
-                 "2️⃣ Ver horarios y ubicación del taller\n"
-                 "3️⃣ Ver enlace de consulta pública\n\n"
-                 "_Escribe 1, 2 o 3 para seleccionar._")
-
-    return str(resp)
+    if not equipo:
+        return "Recibo no encontrado", 404
+        
+    return render_template("recibo.html", equipo=equipo)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
