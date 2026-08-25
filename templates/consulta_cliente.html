@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta tu Reparación - El Chicken</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            background-color: #0f1115;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .card-consulta {
+            background: #181b20;
+            border: 1px solid #292d36;
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        .header-logo {
+            font-size: 40px;
+            margin-bottom: 5px;
+        }
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 13px;
+            color: #858992;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #b0b4be;
+            margin-bottom: 8px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: #0f1115;
+            border: 1px solid #292d36;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: #ff5500;
+        }
+        .btn-buscar {
+            width: 100%;
+            background: #ff5500;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-buscar:hover {
+            background: #e04b00;
+        }
+        .resultado-card {
+            background: #0f1115;
+            border: 1px solid #292d36;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+            text-align: left;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+            border-bottom: 1px dashed #292d36;
+            padding-bottom: 8px;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .info-label {
+            color: #858992;
+        }
+        .info-val {
+            font-weight: bold;
+            color: #ffffff;
+        }
+        .error-msg {
+            background: rgba(229, 9, 20, 0.15);
+            border: 1px solid #e50914;
+            color: #ff6b6b;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-consulta">
+        <div class="header-logo">📱</div>
+        <div class="title">EL CHICKEN</div>
+        <div class="subtitle">Consulta el estado de tu reparación</div>
+
+        <form action="{{ url_for('consultar') }}" method="POST">
+            <div class="form-group">
+                <label for="busqueda">Ingresa tu Folio (Ej: CH-001) o Teléfono:</label>
+                <input type="text" id="busqueda" name="busqueda" placeholder="Ej: CH-001 o 4441234567" required autofocus>
+            </div>
+            <button type="submit" class="btn-buscar">🔍 Consultar Estado</button>
+        </form>
+
+        {% if error %}
+            <div class="error-msg">{{ error }}</div>
+        {% endif %}
+
+        {% if equipo %}
+            <div class="resultado-card">
+                <div class="info-row">
+                    <span class="info-label">Folio:</span>
+                    <span class="info-val">CH-00{{ equipo.id }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Cliente:</span>
+                    <span class="info-val">{{ equipo.cliente }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Equipo:</span>
+                    <span class="info-val">{{ equipo.marca }} {{ equipo.modelo }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Falla reportada:</span>
+                    <span class="info-val">{{ equipo.falla }}</span>
+                </div>
+                <div class="info-row" style="margin-top: 15px; border-bottom: none;">
+                    <span class="info-label">Estado actual:</span>
+                    <span>
+                        {% if equipo.estado == 'Diagnosticando' %}
+                            <span class="badge yellow" style="font-size: 13px; padding: 4px 10px;">Diagnosticando 🔍</span>
+                        {% elif equipo.estado == 'En reparación' %}
+                            <span class="badge blue" style="font-size: 13px; padding: 4px 10px;">En reparación 🛠️</span>
+                        {% else %}
+                            <span class="badge green" style="font-size: 13px; padding: 4px 10px;">¡Listo para entregar! ✅</span>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

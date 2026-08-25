@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial - El Chicken</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">📱</div>
+            <h2>EL CHICKEN</h2>
+            <p>REPARACIÓN DE TELÉFONOS</p>
+        </div>
+        <ul class="menu">
+            <li><a href="{{ url_for('inicio') }}">🏠 &nbsp; Inicio</a></li>
+            <li><a href="{{ url_for('diagnostico') }}">🔍 &nbsp; Diagnosticar teléfono</a></li>
+            <li><a href="{{ url_for('reparaciones') }}">🛠️ &nbsp; Reparaciones</a></li>
+            <li><a href="{{ url_for('clientes') }}">👥 &nbsp; Clientes</a></li>
+            <li><a href="{{ url_for('inventario') }}">📦 &nbsp; Inventario</a></li>
+            <li><a href="{{ url_for('historial') }}" class="active">📊 &nbsp; Historial</a></li>
+        </ul>
+    </aside>
+
+    <main class="main">
+        <div class="top">
+            <div>
+                <h1>Historial de Entregas</h1>
+                <p>Registro de equipos reparados y terminados con éxito</p>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Trabajos Concluidos ({{ total }})</h2>
+            <br>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Folio</th>
+                        <th>Cliente</th>
+                        <th>Teléfono</th>
+                        <th>Dispositivo</th>
+                        <th>Trabajo Realizado</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in reparaciones %}
+                    <tr>
+                        <td>CH-00{{ r.id }}</td>
+                        <td>{{ r.cliente }}</td>
+                        <td>{{ r.telefono }}</td>
+                        <td>{{ r.marca }} {{ r.modelo }}</td>
+                        <td>{{ r.falla }}</td>
+                        <td><span class="badge green">Ready / Terminado</span></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #858992;">
+                            Aún no hay trabajos marcados como 'Terminado'.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</body>
+</html>

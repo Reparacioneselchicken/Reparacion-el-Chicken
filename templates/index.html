@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reparación de Teléfonos El Chicken</title>
+    
+    <!-- Enlace al archivo CSS externo -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">📱</div>
+            <h2>EL CHICKEN</h2>
+            <p>REPARACIÓN DE TELÉFONOS</p>
+        </div>
+
+        <ul class="menu">
+            <li>
+                <a href="{{ url_for('inicio') }}" class="active">🏠 &nbsp; Inicio</a>
+            </li>
+            <li>
+                <a href="{{ url_for('diagnostico') }}">🔍 &nbsp; Diagnosticar teléfono</a>
+            </li>
+           <li>
+    <a href="{{ url_for('reparaciones') }}">🛠️ &nbsp; Reparaciones</a>
+     </li>
+            <li>
+    <a href="{{ url_for('clientes') }}">👥 &nbsp; Clientes</a>
+             </li>
+           <li>
+    <a href="{{ url_for('inventario') }}">📦 &nbsp; Inventario</a>
+</li>
+           <li>
+    <a href="{{ url_for('historial') }}">📊 &nbsp; Historial</a>
+</li>
+        </ul>
+
+    </aside>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main">
+
+        <div class="top">
+            <div>
+                <h1>Panel principal</h1>
+                <p>Sistema de gestión de reparaciones</p>
+            </div>
+            <div class="status">
+                ● Sistema en línea
+            </div>
+        </div>
+
+
+        <!-- ESTADÍSTICAS -->
+       <!-- ESTADÍSTICAS -->
+<div class="cards">
+
+    <div class="card">
+        <div class="icon">📱</div>
+        <h3>{{ totales }}</h3>
+        <p>Reparaciones totales</p>
+    </div>
+
+    <div class="card">
+        <div class="icon">🔧</div>
+        <h3>{{ pendientes }}</h3>
+        <p>Reparaciones pendientes</p>
+    </div>
+
+    <div class="card">
+        <div class="icon">✅</div>
+        <h3>{{ terminadas }}</h3>
+        <p>Reparaciones terminadas</p>
+    </div>
+
+    <div class="card">
+        <div class="icon">👥</div>
+        <h3>{{ clientes_unicos }}</h3>
+        <p>Clientes registrados</p>
+    </div>
+
+</div>
+
+
+        <!-- ACCIONES -->
+        <h2 class="section-title">Acciones rápidas</h2>
+
+        <div class="actions">
+
+            <a href="{{ url_for('diagnostico') }}" class="action">
+                <div class="action-icon">🔍</div>
+                <h3>Diagnosticar teléfono</h3>
+                <p>Realiza un diagnóstico del dispositivo y registra las posibles fallas.</p>
+            </a>
+
+            <div class="action" onclick="alert('Nueva reparación próximamente')">
+                <div class="action-icon">🛠️</div>
+                <h3>Nueva reparación</h3>
+                <p>Registra un nuevo teléfono que ingresa al taller.</p>
+            </div>
+
+            <div class="action" onclick="alert('Crear cotización próximamente')">
+                <div class="action-icon">💰</div>
+                <h3>Crear cotización</h3>
+                <p>Calcula el precio estimado de una reparación.</p>
+            </div>
+
+        </div>
+
+
+        <!-- REPARACIONES RECIENTES -->
+        <div class="panel">
+
+            <div class="panel-header">
+                <h2>Reparaciones recientes</h2>
+                <span>Últimos registros</span>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Folio</th>
+                        <th>Cliente</th>
+                        <th>Dispositivo</th>
+                        <th>Problema</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+    {% for r in reparaciones %}
+    <tr>
+        <td>CH-00{{ r.id }}</td>
+        <td>{{ r.cliente }}</td>
+        <td>{{ r.marca }} {{ r.modelo }}</td>
+        <td>{{ r.falla }}</td>
+        <td>
+            {% if r.estado == 'Diagnosticando' %}
+                <span class="badge yellow">{{ r.estado }}</span>
+            {% elif r.estado == 'En reparación' %}
+                <span class="badge blue">{{ r.estado }}</span>
+            {% else %}
+                <span class="badge green">{{ r.estado }}</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="5" style="text-align: center; color: #858992;">
+            No hay reparaciones registradas aún.
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+            </table>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

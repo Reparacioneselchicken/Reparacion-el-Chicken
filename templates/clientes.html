@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes - El Chicken</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">📱</div>
+            <h2>EL CHICKEN</h2>
+            <p>REPARACIÓN DE TELÉFONOS</p>
+        </div>
+        <ul class="menu">
+            <li><a href="{{ url_for('inicio') }}">🏠 &nbsp; Inicio</a></li>
+            <li><a href="{{ url_for('diagnostico') }}">🔍 &nbsp; Diagnosticar teléfono</a></li>
+            <li><a href="{{ url_for('reparaciones') }}">🛠️ &nbsp; Reparaciones</a></li>
+            <li><a href="{{ url_for('clientes') }}" class="active">👥 &nbsp; Clientes</a></li>
+            <li>
+    <a href="{{ url_for('inventario') }}">📦 &nbsp; Inventario</a></li>
+           <li>
+    <a href="{{ url_for('historial') }}">📊 &nbsp; Historial</a>
+</li>
+        </ul>
+    </aside>
+
+    <main class="main">
+        <div class="top">
+            <div>
+                <h1>Directorio de Clientes</h1>
+                <p>Lista de clientes registrados y su historial de visitas</p>
+            </div>
+        </div>
+
+        <div class="panel">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre del Cliente</th>
+                        <th>Teléfono de Contacto</th>
+                        <th>Equipos Ingresados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in clientes %}
+                    <tr>
+                        <td><strong>{{ c.cliente }}</strong></td>
+                        <td>{{ c.telefono }}</td>
+                        <td><span class="badge blue">{{ c.total_equipos }} equipo(s)</span></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: #858992;">
+                            No hay clientes registrados en el sistema.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</body>
+</html>

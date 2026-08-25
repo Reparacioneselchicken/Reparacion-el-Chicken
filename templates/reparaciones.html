@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reparaciones - El Chicken</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .actions-cell {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .select-estado {
+            background: #0f1115;
+            color: white;
+            border: 1px solid #292d36;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+        .btn-delete {
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">📱</div>
+            <h2>EL CHICKEN</h2>
+            <p>REPARACIÓN DE TELÉFONOS</p>
+        </div>
+        <ul class="menu">
+            <li><a href="{{ url_for('inicio') }}">🏠 &nbsp; Inicio</a></li>
+            <li><a href="{{ url_for('diagnostico') }}">🔍 &nbsp; Diagnosticar teléfono</a></li>
+            <li><a href="{{ url_for('reparaciones') }}" class="active">🛠️ &nbsp; Reparaciones</a></li>
+            <li><a href="#">👥 &nbsp; Clientes</a></li>
+            <li>
+    <a href="{{ url_for('inventario') }}">📦 &nbsp; Inventario</a>
+</li>
+           <li>
+    <a href="{{ url_for('historial') }}">📊 &nbsp; Historial</a>
+</li>
+        </ul>
+    </aside>
+
+    <main class="main">
+        <div class="top">
+            <div>
+                <h1>Lista de Reparaciones</h1>
+                <p>Gestión y cambio de estado de equipos</p>
+            </div>
+            <a href="{{ url_for('diagnostico') }}" class="status" style="text-decoration:none;">+ Nueva Reparación</a>
+        </div>
+
+        <div class="panel">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Folio</th>
+                        <th>Cliente</th>
+                        <th>Teléfono</th>
+                        <th>Dispositivo</th>
+                        <th>Problema</th>
+                        <th>Estado Actual</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in reparaciones %}
+                    <tr>
+                        <td>CH-00{{ r.id }}</td>
+                        <td>{{ r.cliente }}</td>
+                        <td>{{ r.telefono }}</td>
+                        <td>{{ r.marca }} {{ r.modelo }}</td>
+                        <td>{{ r.falla }}</td>
+                        <td>
+                            {% if r.estado == 'Diagnosticando' %}
+                                <span class="badge yellow">{{ r.estado }}</span>
+                            {% elif r.estado == 'En reparación' %}
+                                <span class="badge blue">{{ r.estado }}</span>
+                            {% else %}
+                                <span class="badge green">{{ r.estado }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="actions-cell">
+                            <!-- Formulario cambiar estado -->
+                            <form action="{{ url_for('cambiar_estado', id=r.id) }}" method="POST">
+                                <select name="nuevo_estado" class="select-estado" onchange="this.form.submit()">
+                                    <option value="" disabled selected>Cambiar...</option>
+                                    <option value="Diagnosticando">Diagnosticando</option>
+                                    <option value="En reparación">En reparación</option>
+                                    <option value="Terminado">Terminado</option>
+                                </select>
+                            </form>
+
+                            <!-- Formulario eliminar -->
+                            <form action="{{ url_for('eliminar', id=r.id) }}" method="POST" onsubmit="return confirm('¿Eliminar este registro?')">
+                                <button type="submit" class="btn-delete">🗑️</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: #858992;">
+                            No hay reparaciones registradas.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</body>
+</html>

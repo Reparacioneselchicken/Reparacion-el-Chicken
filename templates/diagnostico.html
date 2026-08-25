@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico - Reparación de Teléfonos El Chicken</title>
+    
+    <!-- Enlace al archivo CSS externo -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        /* Estilos específicos para el formulario */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b8bbc2;
+            font-size: 14px;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: #0f1115;
+            border: 1px solid #292d36;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            border-color: #e50914;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .btn-submit {
+            background: #e50914;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #b80710;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">📱</div>
+            <h2>EL CHICKEN</h2>
+            <p>REPARACIÓN DE TELÉFONOS</p>
+        </div>
+
+        <ul class="menu">
+            <li>
+                <a href="{{ url_for('inicio') }}">🏠 &nbsp; Inicio</a>
+            </li>
+            <li>
+                <a href="{{ url_for('diagnostico') }}" class="active">🔍 &nbsp; Diagnosticar teléfono</a>
+            </li>
+            <li>
+    <a href="{{ url_for('reparaciones') }}">🛠️ &nbsp; Reparaciones</a>
+</li>
+           <li>
+    <a href="{{ url_for('clientes') }}">👥 &nbsp; Clientes</a>
+</li>
+          <li>
+    <a href="{{ url_for('inventario') }}">📦 &nbsp; Inventario</a>
+</li>
+           <li>
+    <a href="{{ url_for('historial') }}">📊 &nbsp; Historial</a>
+</li>
+        </ul>
+
+    </aside>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main">
+
+        <div class="top">
+            <div>
+                <h1>Diagnóstico de Dispositivo</h1>
+                <p>Ingresa los datos del cliente y la falla reportada</p>
+            </div>
+            <a href="{{ url_for('inicio') }}" style="color: #8c9099; text-decoration: none; font-size: 14px;">← Volver al inicio</a>
+        </div>
+
+        <!-- FORMULARIO DE DIAGNÓSTICO -->
+        <div class="panel">
+
+            <form action="{{ url_for('diagnostico') }}" method="POST">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="cliente">Nombre del Cliente</label>
+                        <input type="text" id="cliente" name="cliente" placeholder="Ej. Juan Pérez" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Teléfono de Contacto</label>
+                        <input type="tel" id="telefono" name="telefono" placeholder="Ej. 5512345678" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marca">Marca del Dispositivo</label>
+                        <input type="text" id="marca" name="marca" placeholder="Ej. Samsung, iPhone, Xiaomi" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modelo">Modelo</label>
+                        <input type="text" id="modelo" name="modelo" placeholder="Ej. Galaxy A15 / iPhone 12" required>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="falla">Falla o Problema Reportado</label>
+                    <textarea id="falla" name="falla" rows="4" placeholder="Describe detalladamente lo que le pasa al equipo (no carga, pantalla rota, mojado...)" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="estado">Estado Inicial</label>
+                    <select id="estado" name="estado">
+                        <option value="Diagnosticando">Diagnosticando</option>
+                        <option value="En espera de piezas">En espera de piezas</option>
+                        <option value="En reparación">En reparación</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit">Guardar Diagnóstico</button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

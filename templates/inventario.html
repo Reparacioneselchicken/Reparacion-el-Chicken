@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - El Chicken</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group label {
+            font-size: 13px;
+            color: #858992;
+        }
+        .form-group input {
+            background: #181b20;
+            border: 1px solid #292d36;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .btn-add {
+            background: #0066ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            grid-column: 1 / -1;
+        }
+        .btn-delete {
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">📱</div>
+            <h2>EL CHICKEN</h2>
+            <p>REPARACIÓN DE TELÉFONOS</p>
+        </div>
+        <ul class="menu">
+            <li><a href="{{ url_for('inicio') }}">🏠 &nbsp; Inicio</a></li>
+            <li><a href="{{ url_for('diagnostico') }}">🔍 &nbsp; Diagnosticar teléfono</a></li>
+            <li><a href="{{ url_for('reparaciones') }}">🛠️ &nbsp; Reparaciones</a></li>
+            <li><a href="{{ url_for('clientes') }}">👥 &nbsp; Clientes</a></li>
+            <li><a href="{{ url_for('inventario') }}" class="active">📦 &nbsp; Inventario</a></li>
+            <li>
+    <a href="{{ url_for('historial') }}">📊 &nbsp; Historial</a>
+</li>
+        </ul>
+    </aside>
+
+    <main class="main">
+        <div class="top">
+            <div>
+                <h1>Inventario de Repuestos</h1>
+                <p>Control de refacciones y existencias</p>
+            </div>
+        </div>
+
+        <!-- FORMULARIO PARA REGISTRAR REPUESTO -->
+        <div class="panel" style="margin-bottom: 30px;">
+            <h2>Agregar nueva refacción</h2>
+            <br>
+            <form action="{{ url_for('inventario') }}" method="POST">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Repuesto / Pieza</label>
+                        <input type="text" name="repuesto" placeholder="Ej: Pantalla OLED" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Modelo Compatible</label>
+                        <input type="text" name="compatible" placeholder="Ej: iPhone 11" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio Compra ($)</label>
+                        <input type="number" step="0.01" name="precio_compra" placeholder="350.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio Venta ($)</label>
+                        <input type="number" step="0.01" name="precio_venta" placeholder="700.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad (Stock)</label>
+                        <input type="number" name="cantidad" placeholder="5" required>
+                    </div>
+                    <button type="submit" class="btn-add">+ Registrar Repuesto</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- TABLA DE REPOSTOS -->
+        <div class="panel">
+            <h2>Stock Actual</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pieza</th>
+                        <th>Compatibilidad</th>
+                        <th>Costo</th>
+                        <th>Precio Venta</th>
+                        <th>Stock</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in inventario %}
+                    <tr>
+                        <td><strong>{{ item.repuesto }}</strong></td>
+                        <td>{{ item.compatible }}</td>
+                        <td>${{ item.precio_compra }}</td>
+                        <td>${{ item.precio_venta }}</td>
+                        <td>
+                            {% if item.cantidad <= 2 %}
+                                <span class="badge yellow">{{ item.cantidad }} pza(s)</span>
+                            {% else %}
+                                <span class="badge green">{{ item.cantidad }} pza(s)</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form action="{{ url_for('eliminar_repuesto', id=item.id) }}" method="POST" onsubmit="return confirm('¿Eliminar esta refacción?')">
+                                <button type="submit" class="btn-delete">🗑️</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #858992;">
+                            No hay repuestos registrados en inventario.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</body>
+</html>
