@@ -2,37 +2,73 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Cotización - El Chicken</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div style="padding: 30px; max-width: 600px; margin: auto;">
-        <h2>💰 Crear Cotización Rápida</h2>
-        <p>Calcula el precio estimado de reparación para darle presupuesto al cliente.</p>
+
+    <!-- Menú lateral -->
+    <aside class="sidebar">
+        <div class="logo-container">
+            <div class="logo-icon">📱</div>
+            <h2>EL CHICKEN</h2>
+            <p>REPARACIÓN DE TELÉFONOS</p>
+        </div>
         
-        <form method="POST" style="background: #1e2229; padding: 20px; border-radius: 10px; margin-top: 20px;">
-            <div style="margin-bottom: 15px;">
-                <label style="display: block; margin-bottom: 5px;">Costo del Repuesto ($):</label>
-                <input type="number" step="any" name="repuesto_costo" required style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #444; background: #2a2f38; color: white;">
+        <nav class="nav-menu">
+            <a href="{{ url_for('inicio') }}" class="nav-link">
+                🏠 Inicio
+            </a>
+            <a href="{{ url_for('diagnostico') }}" class="nav-link">
+                🔍 Diagnosticar teléfono
+            </a>
+            <a href="{{ url_for('reparaciones') }}" class="nav-link">
+                🛠️ Reparaciones
+            </a>
+            <a href="{{ url_for('clientes') }}" class="nav-link">
+                👥 Clientes
+            </a>
+            <a href="{{ url_for('inventario') }}" class="nav-link">
+                📦 Inventario
+            </a>
+            <a href="{{ url_for('historial') }}" class="nav-link">
+                📊 Historial
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+        <header class="header">
+            <div>
+                <h1>💰 Crear cotización</h1>
+                <p>Calcula el precio estimado de una reparación</p>
             </div>
+        </header>
 
-            <div style="margin-bottom: 15px;">
-                <label style="display: block; margin-bottom: 5px;">Mano de Obra ($):</label>
-                <input type="number" step="any" name="mano_obra" required style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #444; background: #2a2f38; color: white;">
+        <section class="form-section" style="max-width: 500px;">
+            <form method="POST" class="diagnostico-form">
+                <div class="form-group">
+                    <label>Costo del Repuesto ($)</label>
+                    <input type="number" step="any" name="repuesto_costo" placeholder="0.00" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Mano de Obra ($)</label>
+                    <input type="number" step="any" name="mano_obra" placeholder="0.00" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Calcular Total</button>
+            </form>
+
+            {% if resultado is not none %}
+            <div style="margin-top: 20px; padding: 15px; background: rgba(46, 204, 113, 0.2); border: 1px solid #2ecc71; border-radius: 8px; text-align: center; color: #2ecc71; font-weight: bold; font-size: 1.2rem;">
+                Total a cobrar: ${{ resultado }}
             </div>
+            {% endif %}
+        </section>
+    </main>
 
-            <button type="submit" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">Calcular Total</button>
-        </form>
-
-        {% if resultado is not none %}
-        <div style="margin-top: 20px; background: #27ae60; padding: 15px; border-radius: 8px; text-align: center;">
-            <h3>Total a cobrar al cliente: ${{ resultado }}</h3>
-        </div>
-        {% endif %}
-
-        <div style="margin-top: 20px;">
-            <a href="{{ url_for('inicio') }}" style="color: #3498db; text-decoration: none;">← Volver al Inicio</a>
-        </div>
-    </div>
 </body>
 </html>
