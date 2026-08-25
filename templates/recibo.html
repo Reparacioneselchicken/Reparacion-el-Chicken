@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo de Reparación - CH-{{ equipo['id'] }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .ticket {
+            max-width: 700px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .header-ticket {
+            text-align: center;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .header-ticket h1 {
+            margin: 0;
+            color: #e74c3c;
+            font-size: 1.8rem;
+        }
+        .header-ticket p {
+            margin: 5px 0 0 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .info-section {
+            margin-bottom: 20px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-row span {
+            font-weight: bold;
+        }
+        .garantia-box {
+            background: #fff8f8;
+            border: 1px dashed #e74c3c;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #555;
+        }
+        .garantia-box h4 {
+            margin: 0 0 8px 0;
+            color: #c0392b;
+        }
+        .btn-imprimir {
+            display: block;
+            width: 100%;
+            background-color: #27ae60;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 25px;
+            text-decoration: none;
+        }
+        .btn-imprimir:hover {
+            background-color: #219653;
+        }
+        @media print {
+            body { background: white; padding: 0; }
+            .ticket { box-shadow: none; padding: 0; }
+            .btn-imprimir, .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ticket">
+        <div class="header-ticket">
+            <h1>REPARACIONES EL CHICKEN 🐔📱</h1>
+            <p>Comprobante de Ingreso a Taller y Garantía</p>
+        </div>
+
+        <div class="info-section">
+            <div class="info-row">
+                <div>Folio de Servicio:</div>
+                <span style="color: #e74c3c; font-size: 1.2rem;">CH-{{ equipo['id'] }}</span>
+            </div>
+            <div class="info-row">
+                <div>Fecha de Ingreso:</div>
+                <span>{{ equipo['fecha'] }}</span>
+            </div>
+            <div class="info-row">
+                <div>Cliente:</div>
+                <span>{{ equipo['cliente'] }}</span>
+            </div>
+            <div class="info-row">
+                <div>Teléfono de Contacto:</div>
+                <span>{{ equipo['telefono'] }}</span>
+            </div>
+            <div class="info-row">
+                <div>Dispositivo:</div>
+                <span>{{ equipo['marca'] }} {{ equipo['modelo'] }}</span>
+            </div>
+            <div class="info-row">
+                <div>Problema Reportado:</div>
+                <span>{{ equipo['problema'] }}</span>
+            </div>
+            <div class="info-row">
+                <div>Estado Actual:</div>
+                <span>{{ equipo['estado'] }}</span>
+            </div>
+        </div>
+
+        <div class="garantia-box">
+            <h4>📋 Términos, Condiciones y Garantía:</h4>
+            <p>1. El taller no se hace responsable por equipos sin recoger después de 30 días naturales a partir de la fecha de aviso de término.</p>
+            <p>2. La garantía cubre únicamente la refacción instalada o mano de obra realizada por <strong>30 días</strong>, y quedará inválida en caso de humedad, golpes, caídas o manipulación por terceros.</p>
+            <p>3. Equipos que ingresan apagados o con daño severo por humedad pueden presentar fallas ocultas al ser intervenidos.</p>
+        </div>
+
+        <div style="margin-top: 40px; display: flex; justify-content: space-between; text-align: center;">
+            <div style="border-top: 1px solid #333; width: 45%; padding-top: 5px; font-size: 0.9rem;">
+                Firma del Cliente
+            </div>
+            <div style="border-top: 1px solid #333; width: 45%; padding-top: 5px; font-size: 0.9rem;">
+                Firma del Técnico (El Chicken)
+            </div>
+        </div>
+
+        <button onclick="window.print()" class="btn-imprimir">🖨️ Imprimir / Guardar Recibo (PDF)</button>
+        
+        <div style="text-align: center; margin-top: 15px;" class="no-print">
+            <a href="{{ url_for('reparaciones') }}" style="color: #3498db; text-decoration: none;">← Volver al panel de reparaciones</a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -19,6 +19,20 @@
             border-radius: 6px;
             font-size: 12px;
         }
+        .btn-recibo {
+            background: #3498db;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            font-weight: bold;
+        }
+        .btn-recibo:hover {
+            background: #2980b9;
+        }
         .btn-delete {
             background: #e50914;
             color: white;
@@ -43,12 +57,8 @@
             <li><a href="{{ url_for('diagnostico') }}">🔍 &nbsp; Diagnosticar teléfono</a></li>
             <li><a href="{{ url_for('reparaciones') }}" class="active">🛠️ &nbsp; Reparaciones</a></li>
             <li><a href="#">👥 &nbsp; Clientes</a></li>
-            <li>
-    <a href="{{ url_for('inventario') }}">📦 &nbsp; Inventario</a>
-</li>
-           <li>
-    <a href="{{ url_for('historial') }}">📊 &nbsp; Historial</a>
-</li>
+            <li><a href="{{ url_for('inventario') }}">📦 &nbsp; Inventario</a></li>
+            <li><a href="{{ url_for('historial') }}">📊 &nbsp; Historial</a></li>
         </ul>
     </aside>
 
@@ -92,6 +102,9 @@
                             {% endif %}
                         </td>
                         <td class="actions-cell">
+                            <!-- Botón Imprimir Recibo -->
+                            <a href="/recibo/{{ r.id }}" target="_blank" class="btn-recibo" title="Imprimir Recibo">🖨️ Recibo</a>
+
                             <!-- Formulario cambiar estado -->
                             <form action="{{ url_for('cambiar_estado', id=r.id) }}" method="POST">
                                 <select name="nuevo_estado" class="select-estado" onchange="this.form.submit()">
