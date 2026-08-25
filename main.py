@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from datetime import datetime
-# ¡Aquí está la librería del bot!
-from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
 
@@ -209,38 +207,6 @@ def recibo(id):
     fecha_hoy = datetime.now().strftime("%d/%m/%Y")
         
     return render_template("recibo.html", equipo=equipo, fecha_hoy=fecha_hoy)
-
-# --- RUTA PARA EL BOT DE WHATSAPP ---
-@app.route("/whatsapp", methods=["POST"])
-def whatsapp_bot():
-    # Capturamos el mensaje del cliente
-    mensaje_cliente = request.values.get('Body', '').strip().lower()
-    
-    # Preparamos la respuesta de WhatsApp
-    resp = MessagingResponse()
-    
-    if mensaje_cliente in ['hola', 'buenas', 'buen dia', 'buenas tardes']:
-        resp.message("¡Hola! Bienvenido a Reparaciones El Chicken 🐔.\n\nEscribe tu *número de folio* (ej. 1 o CH-1) o tu *número de teléfono* para consultar el estado de tu equipo.")
-    else:
-        # Limpiamos el texto por si escriben "CH-1" para que solo quede el número "1"
-        busqueda = mensaje_cliente.upper().replace("CH-00", "").replace("CH-0", "").replace("CH-", "")
-        
-        # Buscamos en la base de datos
-        conn = get_db_connection()
-        equipo = conn.execute(
-            'SELECT * FROM diagnosticos WHERE id = ? OR telefono = ?', 
-            (busqueda, mensaje_cliente)
-        ).fetchone()
-        conn.close()
-        
-        # Si encontramos el equipo, le armamos un mensaje bonito
-        if equipo:
-            msg = f"📱 *Equipo:* {equipo['marca']} {equipo['modelo']}\n🛠️ *Falla:* {equipo['falla']}\n📊 *Estado actual:* {equipo['estado']}"
-            resp.message(msg)
-        else:
-            resp.message("No encontré ningún equipo con ese dato 🤔. Verifica tu folio o número e intenta de nuevo.")
-            
-    return str(resp)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
