@@ -94,27 +94,31 @@
         <!-- ACCIONES -->
         <h2 class="section-title">Acciones rápidas</h2>
 
-        <div class="actions">
-
-            <a href="{{ url_for('diagnostico') }}" class="action">
-                <div class="action-icon">🔍</div>
-                <h3>Diagnosticar teléfono</h3>
-                <p>Realiza un diagnóstico del dispositivo y registra las posibles fallas.</p>
-            </a>
-
-            <div class="action" onclick="alert('Nueva reparación próximamente')">
-                <div class="action-icon">🛠️</div>
-                <h3>Nueva reparación</h3>
-                <p>Registra un nuevo teléfono que ingresa al taller.</p>
-            </div>
-
-            <div class="action" onclick="alert('Crear cotización próximamente')">
-                <div class="action-icon">💰</div>
-                <h3>Crear cotización</h3>
-                <p>Calcula el precio estimado de una reparación.</p>
-            </div>
-
+        <!-- Acciones rápidas -->
+<div class="acciones-rapidas">
+    
+    <a href="{{ url_for('diagnostico') }}" style="text-decoration: none; color: inherit;">
+        <div class="card-accion">
+            <h3>🔍 Diagnosticar teléfono</h3>
+            <p>Realiza un diagnóstico del dispositivo y registra las posibles fallas.</p>
         </div>
+    </a>
+
+    <a href="{{ url_for('diagnostico') }}" style="text-decoration: none; color: inherit;">
+        <div class="card-accion">
+            <h3>🛠️ Nueva reparación</h3>
+            <p>Registra un nuevo teléfono que ingresa al taller.</p>
+        </div>
+    </a>
+
+    <a href="{{ url_for('cotizacion') }}" style="text-decoration: none; color: inherit;">
+        <div class="card-accion">
+            <h3>💰 Crear cotización</h3>
+            <p>Calcula el precio estimado de una reparación.</p>
+        </div>
+    </a>
+
+</div>
 
 
         <!-- REPARACIONES RECIENTES -->

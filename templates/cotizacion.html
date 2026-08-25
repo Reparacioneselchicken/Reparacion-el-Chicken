@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Cotización - El Chicken</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div style="padding: 30px; max-width: 600px; margin: auto;">
+        <h2>💰 Crear Cotización Rápida</h2>
+        <p>Calcula el precio estimado de reparación para darle presupuesto al cliente.</p>
+        
+        <form method="POST" style="background: #1e2229; padding: 20px; border-radius: 10px; margin-top: 20px;">
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px;">Costo del Repuesto ($):</label>
+                <input type="number" step="any" name="repuesto_costo" required style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #444; background: #2a2f38; color: white;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px;">Mano de Obra ($):</label>
+                <input type="number" step="any" name="mano_obra" required style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #444; background: #2a2f38; color: white;">
+            </div>
+
+            <button type="submit" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">Calcular Total</button>
+        </form>
+
+        {% if resultado is not none %}
+        <div style="margin-top: 20px; background: #27ae60; padding: 15px; border-radius: 8px; text-align: center;">
+            <h3>Total a cobrar al cliente: ${{ resultado }}</h3>
+        </div>
+        {% endif %}
+
+        <div style="margin-top: 20px;">
+            <a href="{{ url_for('inicio') }}" style="color: #3498db; text-decoration: none;">← Volver al Inicio</a>
+        </div>
+    </div>
+</body>
+</html>

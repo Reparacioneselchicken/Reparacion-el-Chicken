@@ -184,5 +184,17 @@ def consultar():
 
     return render_template("consulta_cliente.html", equipo=equipo, error=error)
 
+# --- RUTA DE COTIZACIONES ---
+
+@app.route("/cotizacion", methods=["GET", "POST"])
+def cotizacion():
+    resultado = None
+    if request.method == "POST":
+        repuesto_costo = float(request.form.get('repuesto_costo', 0))
+        mano_obra = float(request.form.get('mano_obra', 0))
+        resultado = repuesto_costo + mano_obra
+        
+    return render_template("cotizacion.html", resultado=resultado)
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
