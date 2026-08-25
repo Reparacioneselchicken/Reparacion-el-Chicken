@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -152,7 +153,6 @@ def eliminar_repuesto(id):
 @app.route("/historial")
 def historial():
     conn = get_db_connection()
-    # Trae solo los trabajos con estado 'Terminado'
     terminados = conn.execute("SELECT * FROM diagnosticos WHERE estado = 'Terminado' ORDER BY id DESC").fetchall()
     total_terminados = len(terminados)
     conn.close()
@@ -167,12 +167,9 @@ def consultar():
     
     if request.method == "POST":
         busqueda = request.form.get('busqueda', '').strip()
-        
-        # Limpiamos si el cliente escribió "CH-001" o solo "1"
         folio_id = busqueda.upper().replace("CH-00", "").replace("CH-0", "").replace("CH-", "")
         
         conn = get_db_connection()
-        # Busca por ID de folio o por número de teléfono
         equipo = conn.execute(
             'SELECT * FROM diagnosticos WHERE id = ? OR telefono = ?', 
             (folio_id, busqueda)
@@ -196,8 +193,6 @@ def cotizacion():
         
     return render_template("cotizacion.html", resultado=resultado)
 
-
-
 # --- RUTA PARA EL RECIBO Y GARANTÍA ---
 
 @app.route("/recibo/<int:id>")
@@ -209,7 +204,9 @@ def recibo(id):
     if not equipo:
         return "Recibo no encontrado", 404
         
-    return render_template("recibo.html", equipo=equipo)
+    fecha_hoy = datetime.now().strftime("%d/%m/%Y")
+        
+    return render_template("recibo.html", equipo=equipo, fecha_hoy=fecha_hoy)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
