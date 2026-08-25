@@ -4,14 +4,185 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Cotización - El Chicken</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: #121824;
+            color: #ffffff;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar estilo original */
+        .sidebar {
+            width: 260px;
+            background-color: #1a2232;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #2a3447;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-box {
+            background-color: #e74c3c;
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px auto;
+            font-size: 28px;
+        }
+
+        .logo-container h2 {
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .logo-container p {
+            font-size: 0.75rem;
+            color: #7f8c8d;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #95a5a6;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: #242e42;
+            color: #ffffff;
+        }
+
+        .nav-link.active {
+            background-color: #e74c3c;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            flex: 1;
+            padding: 35px 40px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+
+        /* Formulario */
+        .form-card {
+            background-color: #1a2232;
+            padding: 30px;
+            border-radius: 14px;
+            max-width: 500px;
+            border: 1px solid #2a3447;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            background-color: #242e42;
+            border: 1px solid #34495e;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #e74c3c;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #e74c3c;
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #c0392b;
+        }
+
+        .resultado-box {
+            margin-top: 25px;
+            background-color: rgba(46, 204, 113, 0.15);
+            border: 1px solid #2ecc71;
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+            color: #2ecc71;
+        }
+
+        .resultado-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Menú lateral -->
     <aside class="sidebar">
         <div class="logo-container">
-            <div class="logo-icon">📱</div>
+            <div class="logo-box">📱</div>
             <h2>EL CHICKEN</h2>
             <p>REPARACIÓN DE TELÉFONOS</p>
         </div>
@@ -41,14 +212,12 @@
     <!-- Contenido principal -->
     <main class="main-content">
         <header class="header">
-            <div>
-                <h1>💰 Crear cotización</h1>
-                <p>Calcula el precio estimado de una reparación</p>
-            </div>
+            <h1>💰 Crear cotización</h1>
+            <p>Calcula el precio estimado de una reparación para el cliente.</p>
         </header>
 
-        <section class="form-section" style="max-width: 500px;">
-            <form method="POST" class="diagnostico-form">
+        <div class="form-card">
+            <form method="POST">
                 <div class="form-group">
                     <label>Costo del Repuesto ($)</label>
                     <input type="number" step="any" name="repuesto_costo" placeholder="0.00" required>
@@ -63,11 +232,11 @@
             </form>
 
             {% if resultado is not none %}
-            <div style="margin-top: 20px; padding: 15px; background: rgba(46, 204, 113, 0.2); border: 1px solid #2ecc71; border-radius: 8px; text-align: center; color: #2ecc71; font-weight: bold; font-size: 1.2rem;">
-                Total a cobrar: ${{ resultado }}
+            <div class="resultado-box">
+                <h3>Total a cobrar: ${{ "%.2f"|format(resultado) }}</h3>
             </div>
             {% endif %}
-        </section>
+        </div>
     </main>
 
 </body>

@@ -91,30 +91,31 @@
 </div>
 
 
-        <!-- ACCIONES -->
-        <h2 class="section-title">Acciones rápidas</h2>
-
-        <!-- Acciones rápidas -->
-<div class="acciones-rapidas">
+       <!-- Acciones rápidas -->
+<h2 class="section-title">Acciones rápidas</h2>
+<div class="actions" style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px;">
     
-    <a href="{{ url_for('diagnostico') }}" style="text-decoration: none; color: inherit;">
-        <div class="card-accion">
-            <h3>🔍 Diagnosticar teléfono</h3>
-            <p>Realiza un diagnóstico del dispositivo y registra las posibles fallas.</p>
+    <a href="{{ url_for('diagnostico') }}" style="text-decoration: none; color: inherit; flex: 1; min-width: 240px;">
+        <div class="action" style="background-color: #1a2232; padding: 24px; border-radius: 12px; border: 1px solid #2a3447; height: 100%; transition: transform 0.2s;">
+            <div class="action-icon" style="font-size: 28px; margin-bottom: 12px;">🔍</div>
+            <h3 style="margin-bottom: 8px; font-size: 1.1rem; color: #ffffff;">Diagnosticar teléfono</h3>
+            <p style="color: #7f8c8d; font-size: 0.88rem; line-height: 1.4;">Realiza un diagnóstico del dispositivo y registra las posibles fallas.</p>
         </div>
     </a>
 
-    <a href="{{ url_for('diagnostico') }}" style="text-decoration: none; color: inherit;">
-        <div class="card-accion">
-            <h3>🛠️ Nueva reparación</h3>
-            <p>Registra un nuevo teléfono que ingresa al taller.</p>
+    <a href="{{ url_for('diagnostico') }}" style="text-decoration: none; color: inherit; flex: 1; min-width: 240px;">
+        <div class="action" style="background-color: #1a2232; padding: 24px; border-radius: 12px; border: 1px solid #2a3447; height: 100%; transition: transform 0.2s;">
+            <div class="action-icon" style="font-size: 28px; margin-bottom: 12px;">🛠️</div>
+            <h3 style="margin-bottom: 8px; font-size: 1.1rem; color: #ffffff;">Nueva reparación</h3>
+            <p style="color: #7f8c8d; font-size: 0.88rem; line-height: 1.4;">Registra un nuevo teléfono que ingresa al taller.</p>
         </div>
     </a>
 
-    <a href="{{ url_for('cotizacion') }}" style="text-decoration: none; color: inherit;">
-        <div class="card-accion">
-            <h3>💰 Crear cotización</h3>
-            <p>Calcula el precio estimado de una reparación.</p>
+    <a href="{{ url_for('cotizacion') }}" style="text-decoration: none; color: inherit; flex: 1; min-width: 240px;">
+        <div class="action" style="background-color: #1a2232; padding: 24px; border-radius: 12px; border: 1px solid #2a3447; height: 100%; transition: transform 0.2s;">
+            <div class="action-icon" style="font-size: 28px; margin-bottom: 12px;">💰</div>
+            <h3 style="margin-bottom: 8px; font-size: 1.1rem; color: #ffffff;">Crear cotización</h3>
+            <p style="color: #7f8c8d; font-size: 0.88rem; line-height: 1.4;">Calcula el precio estimado de una reparación.</p>
         </div>
     </a>
 
